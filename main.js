@@ -1,6 +1,7 @@
 'use-strict';
 
 const list = document.querySelector('.heroines-list');
+const buttonCreate = document.querySelector('.create-button');
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 headers.append('Accept', 'application.json');
@@ -12,8 +13,8 @@ function setHTMLList(heroines) {
                 <p class="hero-name">${heroine.name}</p>
                 <div class="hero-superpower">
                     ${heroine.superpowers.map(s => {
-                        return `<p>${s}</p>`
-                    })}
+            return `<p>${s}</p>`
+        })}
                 </div>
             </li>
         `
@@ -31,16 +32,16 @@ function requestAdaHeroinesList() {
         })
 }
 
-function createAdaHeroine(heroine) {
-    const options = {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(heroine)
-    };
-
+function createAdaHeroine() {
     const url = 'https://heroines-api.herokuapp.com/ada-heroin';
-
-    fetch(url, options)
+    const body = {
+        "name": "Test",
+        "superpowers": [
+            "If this works I go to sleep"
+        ]
+    }
+    const myRequest = new Request(url, {method: 'POST', body: body});
+    fetch(myRequest)
         .then(response => response.json())
         .then(heroines => {
 
@@ -58,7 +59,7 @@ function updateAdaHeroine(id, body) {
 
     fetch(url, options)
         .then(response => response.json())
-        .then(heroines => console.log(heroines))
+        .then(heroine => console.log(heroine))
 }
 
 function deleteAdaHeroine(id) {
@@ -82,4 +83,5 @@ function requestRandomCatImage() {
     return image;
 }
 
-requestAdaHeroinesList()
+requestAdaHeroinesList();
+buttonCreate.addEventListener('click', createAdaHeroine());
