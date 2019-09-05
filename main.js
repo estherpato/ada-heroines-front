@@ -1,38 +1,50 @@
 'use-strict';
 
-const CAT_API_KEY = 'a31d9c88-3c95-4125-84ca-8a1f29a2f90a';
-
+const list = document.querySelector('.heroines-list');
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 headers.append('Accept', 'application.json');
 
+function setHTMLList(heroines) {
+    heroines.map(heroine => {
+        list.innerHTML = `
+            <li class="item">
+                <p class="hero-name">${heroine.name}</p>
+                <div class="hero-superpower">
+                    ${heroine.superpowers.map(s => {
+                        return `<p>${s}</p>`
+                    })}
+                </div>
+            </li>
+        `
+    })
+}
 
 function requestAdaHeroinesList() {
-    const options = {
-        method: 'GET',
-        headers: headers
-    };
-
     const url = 'https://heroines-api.herokuapp.com/ada-heroines';
-
-    fetch(url, options)
+    fetch(url)
         .then(response => response.json())
-        .then(heroines => console.log(heroines))
-
+        .then(heroines => {
+            let heroinesList = [];
+            heroines.map(heroine => heroinesList.push(heroine));
+            setHTMLList(heroinesList);
+        })
 }
 
 function createAdaHeroine(heroine) {
     const options = {
         method: 'POST',
         headers: headers,
-        body: heroine
+        body: JSON.stringify(heroine)
     };
 
     const url = 'https://heroines-api.herokuapp.com/ada-heroin';
 
     fetch(url, options)
         .then(response => response.json())
-        .then(heroines => console.log(heroines))
+        .then(heroines => {
+
+        })
 }
 
 function updateAdaHeroine(id, body) {
@@ -63,7 +75,7 @@ function deleteAdaHeroine(id) {
 }
 
 function requestRandomCatImage() {
-    let image;
+    let image = '';
     fetch('https://api.thecatapi.com/v1/images/search')
         .then(response => response.json())
         .then(data => image = data[0].url);
@@ -71,4 +83,3 @@ function requestRandomCatImage() {
 }
 
 requestAdaHeroinesList()
-

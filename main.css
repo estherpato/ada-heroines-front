@@ -30,7 +30,9 @@ body {
 .main-container {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     flex: 1;
+    margin: 0 40px;
 }
 
 .footer-container {
@@ -44,6 +46,24 @@ body {
     border-top: 1px solid grey;
 }
 
+.item {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+}
+
+.hero-name {
+    font-family: 'Pacifico', cursive;
+    color: #14d9c4;
+    font-size: 20px;
+    margin: 10px 0;
+}
 
 
 /* font-family: 'Pacifico', cursive;
