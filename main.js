@@ -1,10 +1,8 @@
 'use-strict';
 
 const list = document.querySelector('.heroines-list');
-const buttonCreate = document.querySelector('.create-button');
-const headers = new Headers();
-headers.append('Content-Type', 'application/json');
-headers.append('Accept', 'application.json');
+const buttonGet = document.querySelector('.get-button');
+const buttonPost = document.querySelector('.create-button');
 
 function setHTMLList(heroines) {
     heroines.map(heroine => {
@@ -30,58 +28,48 @@ function requestAdaHeroinesList() {
             heroines.map(heroine => heroinesList.push(heroine));
             setHTMLList(heroinesList);
         })
+        .catch(err => console.error(err))
 }
 
+
+
+// jQuery example
+// $('.create-button').click(function() {
+//     $.post(postUrl, body, function(data, status) {
+//         console.log(`${data} and status is ${status}`)
+//     })
+// })
+
+// AJAX example
+// let req = new XMLHttpRequest();
+// req.open('POST', url);
+// req.send(body);
+// req.onreadystatechange = (e) => {
+//     console.log(req.responseText);
+// }
+
 function createAdaHeroine() {
-    const url = 'https://heroines-api.herokuapp.com/ada-heroin';
+    const postUrl = 'https://heroines-api.herokuapp.com/ada-heorines';
     const body = {
         "name": "Test",
         "superpowers": [
             "If this works I go to sleep"
         ]
     }
-    const myRequest = new Request(url, {method: 'POST', body: body});
-    fetch(myRequest)
-        .then(response => response.json())
-        .then(heroines => {
-
-        })
-}
-
-function updateAdaHeroine(id, body) {
     const options = {
-        method: 'PUT',
-        headers: headers,
-        body: heroine
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: body,
+        method: 'POST'
     };
 
-    const url = `https://heroines-api.herokuapp.com/ada-heroin/${id}`;
-
-    fetch(url, options)
-        .then(response => response.json())
-        .then(heroine => console.log(heroine))
+    fetch(postUrl, options)
+        .then(data => data.json())
+        .then(res => console.log(res))
+        .catch(error => console.error(error))
 }
 
-function deleteAdaHeroine(id) {
-    const options = {
-        method: 'DELETE',
-        headers: headers,
-    };
 
-    const url = `https://heroines-api.herokuapp.com/ada-heroin/${id}`;
-
-    fetch(url, options)
-        .then(response => response.json())
-        .then(heroines => console.log(heroines))
-}
-
-function requestRandomCatImage() {
-    let image = '';
-    fetch('https://api.thecatapi.com/v1/images/search')
-        .then(response => response.json())
-        .then(data => image = data[0].url);
-    return image;
-}
-
-requestAdaHeroinesList();
-buttonCreate.addEventListener('click', createAdaHeroine());
+buttonGet.addEventListener('click', requestAdaHeroinesList);
+buttonPost.addEventListener('click', createAdaHeroine);
