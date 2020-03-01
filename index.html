@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Pacifico|Source+Serif+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ada Heroines</title>
@@ -17,8 +17,19 @@
     <main class="main-container">
         <div class="button-container">
             <button class="button get-button">Get heroines!</button>
-            <button class="button create-button">Create heroine!</button>
         </div>
+        <form class="form">
+            <div class="input-container">
+                <label class="label" for="name"><span>Heroine Name</span>
+                    <input type="text" name="name" class="custom-input" id="name" required autocomplete="off" />
+                </label>
+                
+                <label class="label" for="superpower"><span>Superpower?</span>
+                    <input type="text" name="superpower" class="custom-input" id="superpower" required autocomplete="off" />
+                </label>
+            </div>
+            <button class="button create-button">Create heroine!</button>
+        </form>
         <ul class="heroines-list"></ul>
     </main>
     <footer class="footer-container">

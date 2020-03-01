@@ -3,7 +3,6 @@
 const list = document.querySelector('.heroines-list');
 const buttonGet = document.querySelector('.get-button');
 const buttonPost = document.querySelector('.create-button');
-const buttonPut = document.querySelector('.update-button');
 
 function setHTMLList(heroines) {
     heroines.map(heroine => {
@@ -12,9 +11,10 @@ function setHTMLList(heroines) {
                 <p class="hero-name">${heroine.name}</p>
                 <div class="hero-superpower">
                     ${heroine.superpowers.map(s => {
-            return `<p>${s}</p>`
-        })}
+                    return `<p>${s}</p>`
+                    })}
                 </div>
+                <a class="update-link">Update</a>
             </li>
         `
     })
@@ -35,9 +35,9 @@ function requestAdaHeroinesList() {
 function createAdaHeroine() {
     const postUrl = 'https://heroines-api.herokuapp.com/ada-heroines';
     const body = {
-        "name": "Test",
+        "name": "Débora",
         "superpowers": [
-            "If this works I go to sleep"
+            "Drinking beer like a boss"
         ]
     }
     const options = {
@@ -92,4 +92,3 @@ function deleteAdaHeroine() {
 
 buttonGet.addEventListener('click', requestAdaHeroinesList);
 buttonPost.addEventListener('click', createAdaHeroine);
-buttonPut.addEventListener('click', deleteAdaHeroine);
