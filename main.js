@@ -6,7 +6,7 @@ const buttonPost = document.querySelector('.create-button');
 
 function setHTMLList(heroines) {
     heroines.map(heroine => {
-        list.innerHTML = `
+        list.innerHTML += `
             <li class="item">
                 <p class="hero-name">${heroine.name}</p>
                 <div class="hero-superpower">
@@ -60,9 +60,11 @@ function createAdaHeroine() {
         headers: {
             'content-type': 'application/json'
         },
-        body: body,
+        body: JSON.stringify(body),
         method: 'POST'
     };
+
+    console.log('options', options)
 
     fetch(postUrl, options)
         .then(data => data.json())
