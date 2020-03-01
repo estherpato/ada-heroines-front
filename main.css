@@ -12,6 +12,7 @@ body {
     font-family: 'Source Serif Pro', serif;
     color: #333333;
     background-color: #fafafa;
+    position: relative;
 }
 
 .header-container {
@@ -44,14 +45,30 @@ body {
 }
 
 .footer-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    background-color: #333333;
+}
+
+.inner-footer-container {
     width: 100%;
     display: flex;
-    font-size: 12px;
+    font-size: 14px;
     align-items: center;
-    justify-content: space-around;
-    background-color: #C5CDD0;
-    height: 30px;
-    border-top: 1px solid grey;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #333333;
+    color: #fafafa;
+    max-width: 800px;
+    padding: 10px 0;
+}
+
+.inner-footer-container p {
+    margin: 5px;
 }
 
 .item {
@@ -60,7 +77,7 @@ body {
     width: 200px;
     height: 300px;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     background-color: white;
     padding: 10px;
     margin: 10px;
@@ -75,7 +92,10 @@ body {
 
 .button-container {
     display: flex;
+    width: 100%;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .button {
@@ -86,6 +106,8 @@ body {
     height: 50px;
     border-radius: 5px;
     font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
 
 .button:hover {
@@ -93,9 +115,27 @@ body {
     color: white;
 }
 
-.create-button {
-    margin-left: 15px;
-}
 
-/* font-family: 'Pacifico', cursive;
-font-family: 'Source Serif Pro', serif; */
+@media only screen and (min-width: 768px) {
+    .button-container {
+        flex-direction: row;
+    }
+
+    .button {
+        margin-bottom: 0;
+    }
+
+    .get-button {
+        margin-right: 20px;
+    }
+
+    .inner-footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .inner-footer-container p {
+        margin: 0;
+    }
+}
