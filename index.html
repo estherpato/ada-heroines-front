@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Montserrat&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ada Heroines</title>
@@ -17,8 +18,9 @@
     <main class="main-container">
         <div class="button-container">
             <button class="button get-button">Get heroines!</button>
+            <button class="button add-button">Add a heroine!</button>
         </div>
-        <form class="form">
+        <form id="create-form" class="hidden">
             <div class="input-container">
                 <label class="label" for="name"><span>Heroine Name</span>
                     <input type="text" name="name" class="custom-input" id="name" required autocomplete="off" />
@@ -31,7 +33,14 @@
             </div>
             <button class="button create-button">Create heroine!</button>
         </form>
-        <ul class="heroines-list"></ul>
+        <div id="loader">
+            <img src="images/loader.svg" alt="Loader">
+        </div>
+        <ul class="heroines-list">
+
+        </ul>
+
+        <div id="notification" class="notification">Notification!</div>
     </main>
     <footer class="footer-container">
         <div class="inner-footer-container">
@@ -43,7 +52,6 @@
 </body>
 
 
-<script type="text/javascript" src="js/CRUD.js"></script>
-<script type="module" src="js/main.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
 
 </html>
