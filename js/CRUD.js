@@ -1,23 +1,6 @@
-'use-strict';
-
-const list = document.querySelector('.heroines-list');
-const buttonGet = document.querySelector('.get-button');
-const buttonPost = document.querySelector('.create-button');
-
-function setHTMLList(heroines) {
-    heroines.map(heroine => {
-        list.innerHTML += `
-            <li class="item">
-                <p class="hero-name">${heroine.name}</p>
-                <div class="hero-superpower">
-                    ${heroine.superpowers.map(s => {
-                    return `<p>${s}</p>`
-                    })}
-                </div>
-                <a class="update-link">Update</a>
-            </li>
-        `
-    })
+const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
 }
 
 function requestAdaHeroinesList() {
@@ -41,9 +24,7 @@ function createAdaHeroine() {
         ]
     }
     const options = {
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify(body),
         method: 'POST'
     };
@@ -63,10 +44,7 @@ function updateAdaHeroine() {
         ]
     };
     const options = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(body),
         method: 'PUT'
     };
@@ -88,7 +66,3 @@ function deleteAdaHeroine() {
         .then(response => console.log(response))
         .catch(error => console.log('Error', error))
 }
-
-
-buttonGet.addEventListener('click', requestAdaHeroinesList);
-buttonPost.addEventListener('click', createAdaHeroine);
