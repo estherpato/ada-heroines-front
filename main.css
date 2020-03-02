@@ -13,7 +13,7 @@ body {
     color: #333333;
     background-color: #fafafa;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .header-container {
