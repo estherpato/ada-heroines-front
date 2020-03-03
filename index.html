@@ -23,15 +23,28 @@
         <form id="create-form" class="hidden">
             <div class="input-container">
                 <label class="label" for="name"><span>Heroine Name</span>
-                    <input type="text" name="name" class="custom-input" id="name" required autocomplete="off" />
+                    <input type="text" name="name" class="custom-input" id="name-create" required autocomplete="off" />
                 </label>
 
                 <label class="label" for="superpower"><span>Superpower?</span>
-                    <input type="text" name="superpower" class="custom-input" id="superpower" required
+                    <input type="text" name="superpower" class="custom-input" id="superpower-create" required
                         autocomplete="off" />
                 </label>
             </div>
             <button class="button create-button">Create heroine!</button>
+        </form>
+        <form id="update-form" class="hidden">
+            <div class="input-container">
+                <label class="label" for="name"><span>Heroine Name</span>
+                    <input type="text" name="name" class="custom-input" id="name-update" required autocomplete="off" />
+                </label>
+
+                <label class="label" for="superpower"><span>Superpower?</span>
+                    <input type="text" name="superpower" class="custom-input" id="superpower-update" required
+                        autocomplete="off" />
+                </label>
+            </div>
+            <button class="button update-button">Update heroine!</button>
         </form>
         <div id="loader">
             <img src="images/loader.svg" alt="Loader">

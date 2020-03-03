@@ -123,12 +123,33 @@ input:focus {
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     background-color: white;
-    padding: 10px;
+    padding: 15px;
     margin: 10px;
 }
 
 .hero-superpower {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
     flex-grow: 1;
+}
+
+.card-bottom {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid lightgray;
+}
+
+
+.trash-image {
+    width: 20px;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 .update-link {
@@ -146,7 +167,7 @@ input:focus {
     font-family: 'Kaushan Script';
     color: #14d9c4;
     font-size: 20px;
-    margin: 10px 0;
+    margin-bottom: 15px;
 }
 
 .button-container {
@@ -209,6 +230,7 @@ input:focus {
 }
 
 
+
 @media only screen and (min-width: 768px) {
     .button-container {
         flex-direction: row;
@@ -224,7 +246,7 @@ input:focus {
 
     .form {
         margin-top: 30px 0 0 0;
-        
+
     }
 
     .input-container {

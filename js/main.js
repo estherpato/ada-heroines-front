@@ -3,12 +3,19 @@
 const buttonGet = document.querySelector('.get-button');
 const buttonPost = document.querySelector('.create-button');
 const addButton = document.querySelector('.add-button');
+const updateButton = document.querySelector('.update-button');
 const list = document.querySelector('.heroines-list');
-const form = document.getElementById('create-form');
+const createForm = document.getElementById('create-form');
+const updateForm = document.getElementById('update-form');
 const loader = document.getElementById('loader');
-const inputName = document.getElementById('name');
-const inputSuperpower = document.getElementById('superpower');
+const inputNameCreate = document.getElementById('name-create');
+const inputSuperpowerCreate = document.getElementById('superpower-create');
+const inputNameUpdate = document.getElementById('name-update');
+const inputSuperpowerUpdate = document.getElementById('superpower-update');
 const notification = document.getElementById('notification');
+
+let heroinesList = [];
+let heroineToWorkWith;
 
 const headers = {
     'Content-Type': 'application/json',
@@ -16,21 +23,53 @@ const headers = {
 }
 
 function setHTMLList(heroines) {
-    heroines.map(heroine => {
+    list.innerHTML = '';
+    heroines.map((heroine, index) => {
         list.innerHTML +=
             `
-            <li class="item">
+            <li class="item" heroine-id=${heroine.id}>
                 <p class="hero-name">${heroine.name}</p>
                 <div class="hero-superpower">
-                    ${heroine.superpowers.map(s => {
+                    ${heroine.superpowers.map((s) => {
                 return `<p>${s}</p>`
             })}
+                <div class="card-bottom">
+                    <img class="trash-image" src="./images/trash-icon.svg">
+                    <a id="update-link-${index}" class="update-link">Update</a>
                 </div>
-                <i class="far fa-trash-alt"></i>
-                <a class="update-link">Update</a>
             </li>
-        `
-    })
+        `;
+    });
+}
+
+function setHeroineToWorkWith(e) {
+    let element = e.target;
+    let parentNodes = [];
+    while (element) {
+        parentNodes.unshift(element);
+        element = element.parentNode;
+    };
+    const heroineCard = parentNodes.filter(el => el.className === 'item').reduce((a, b) => a);
+    const heroineID = heroineCard.getAttribute('heroine-id');
+    heroineToWorkWith = heroinesList.filter(heroine => heroine.id === heroineID).reduce((a, b) => a);
+}
+
+function openFormToUpdate(e) {
+    setHeroineToWorkWith(e);
+    inputNameUpdate.value = heroineToWorkWith.name;
+    inputSuperpowerUpdate.value = heroineToWorkWith.superpowers[0];
+    showElement(updateForm, 'form');
+}
+
+function getReadyToDelete(e) {
+    setHeroineToWorkWith(e);
+    deleteAdaHeroine(heroineToWorkWith.id);
+}
+
+function addEventListenerList(list, event, fn) {
+    for (var i = 0, len = list.length; i < len; i++) {
+        list[i].addEventListener(event, fn, false);
+    }
 }
 
 function requestAdaHeroinesList() {
@@ -39,21 +78,36 @@ function requestAdaHeroinesList() {
     fetch(url)
         .then(response => response.json())
         .then(heroines => {
-            loader.classList.remove('loader');
-            let heroinesList = [];
-            heroines.map(heroine => heroinesList.push(heroine));
-            setHTMLList(heroinesList);
+            successfulGetRequest(heroines);
         })
         .catch(err => console.error(err))
+}
+
+function successfulGetRequest(heroines) {
+    loader.classList.remove('loader');
+    heroines.map(heroine => heroinesList.push(heroine));
+    if (heroinesList.length > 0) {
+        setHTMLList(heroinesList);
+        const updateLink = document.querySelectorAll('.update-link');
+        const deleteIcon = document.querySelectorAll('.trash-image');
+        addEventListenerList(updateLink, 'click', openFormToUpdate);
+        addEventListenerList(deleteIcon, 'click', getReadyToDelete)
+    }
+    else list.innerHTML = `
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 15px;">
+        <p style="margin-bottom: 15px">No heroines in here! :(</p>
+        <img src="https://media1.tenor.com/images/d5c26505e0893c10fc32a389d938e590/tenor.gif">
+    </div>
+    `;
 }
 
 function createAdaHeroine(e) {
     e.preventDefault();
     const postUrl = 'https://heroines-api.herokuapp.com/ada-heroines';
     const body = {
-        "name": inputName.value,
+        "name": inputNameCreate.value,
         "superpowers": [
-            inputSuperpower.value
+            inputSuperpowerCreate.value
         ]
     }
     const options = {
@@ -62,14 +116,11 @@ function createAdaHeroine(e) {
         method: 'POST'
     };
 
-    if (!!inputName.value && !!inputSuperpower.value) {
+    if (!!inputNameCreate.value && !!inputSuperpowerCreate.value) {
         fetch(postUrl, options)
             .then(data => data.json())
             .then(res => {
-                inputName.value = '';
-                inputSuperpower.value = '';
-                hideElement(form, 'form');
-                showNotification('Heroine created!');
+                successfulPostRequest();
             })
             .catch(error => console.error(error))
     } else {
@@ -77,12 +128,20 @@ function createAdaHeroine(e) {
     }
 }
 
-function updateAdaHeroine() {
-    const putUrl = 'https://heroines-api.herokuapp.com/ada-heroines/5e254972-2c81-4ca6-83c1-59c506e9c518';
+function successfulPostRequest() {
+    inputNameCreate.value = '';
+    inputSuperpowerCreate.value = '';
+    hideElement(createForm, 'form');
+    showNotification('Heroine created!');
+}
+
+function updateAdaHeroine(e, heroineID) {
+    e.preventDefault();
+    const putUrl = `https://heroines-api.herokuapp.com/ada-heroines/${heroineID}`;
     const body = {
-        "name": "Esther",
+        "name": inputNameUpdate.value,
         "superpowers": [
-            "Updated heroine"
+            inputSuperpowerUpdate.value
         ]
     };
     const options = {
@@ -91,21 +150,32 @@ function updateAdaHeroine() {
         method: 'PUT'
     };
 
-    fetch(putUrl, options)
-        .then(data => data.json())
-        .then(res => console.log(res))
-        .catch(error => console.error(error))
+    if (!!inputNameUpdate.value && !!inputSuperpowerUpdate.value) {
+        fetch(putUrl, options)
+            .then(data => data.json())
+            .then(res => {
+                showNotification('Heroine updated!');
+                hideElement(updateForm, 'form');
+                heroinesList = [];
+                requestAdaHeroinesList();
+            })
+            .catch(error => console.error(error))
+    }
 }
 
-function deleteAdaHeroine() {
-    const deleteUrl = 'https://heroines-api.herokuapp.com/ada-heroines/5e254972-2c81-4ca6-83c1-59c506e9c518';
+function deleteAdaHeroine(heroineID) {
+    const deleteUrl = `https://heroines-api.herokuapp.com/ada-heroines/${heroineID}`;
 
     const options = {
         method: 'DELETE'
     };
 
     fetch(deleteUrl, options)
-        .then(response => console.log(response))
+        .then(response => {
+            showNotification('Heroine deleted! :(');
+            heroinesList = [];
+            requestAdaHeroinesList();
+        })
         .catch(error => console.log('Error', error))
 }
 
@@ -128,4 +198,5 @@ function showNotification(message) {
 
 buttonGet.addEventListener('click', requestAdaHeroinesList);
 buttonPost.addEventListener('click', createAdaHeroine);
-addButton.addEventListener('click', () => showElement(form, 'form'))
+addButton.addEventListener('click', () => showElement(createForm, 'form'));
+updateButton.addEventListener('click', (e) => updateAdaHeroine(e, heroineToWorkWith.id))
