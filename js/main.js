@@ -39,12 +39,22 @@ function requestAdaHeroinesList() {
     fetch(url)
         .then(response => response.json())
         .then(heroines => {
-            loader.classList.remove('loader');
-            let heroinesList = [];
-            heroines.map(heroine => heroinesList.push(heroine));
-            setHTMLList(heroinesList);
+            successfulGetRequest(heroines);
         })
         .catch(err => console.error(err))
+}
+
+function successfulGetRequest(heroines) {
+    loader.classList.remove('loader');
+    let heroinesList = [];
+    heroines.map(heroine => heroinesList.push(heroine));
+    if(heroinesList.length > 0) setHTMLList(heroinesList);
+    else list.innerHTML = `
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 15px;">
+        <p style="margin-bottom: 15px">No heroines in here! :(</p>
+        <img src="https://media1.tenor.com/images/d5c26505e0893c10fc32a389d938e590/tenor.gif">
+    </div>
+    `
 }
 
 function createAdaHeroine(e) {
@@ -66,15 +76,19 @@ function createAdaHeroine(e) {
         fetch(postUrl, options)
             .then(data => data.json())
             .then(res => {
-                inputName.value = '';
-                inputSuperpower.value = '';
-                hideElement(form, 'form');
-                showNotification('Heroine created!');
+                successfulPostRequest();
             })
             .catch(error => console.error(error))
     } else {
         console.log('Nope');
     }
+}
+
+function successfulPostRequest() {
+    inputName.value = '';
+    inputSuperpower.value = '';
+    hideElement(form, 'form');
+    showNotification('Heroine created!');
 }
 
 function updateAdaHeroine() {
