@@ -1,3 +1,5 @@
+'use-strict';
+
 function requestAdaHeroinesList() {
     const url = 'https://heroines-api.herokuapp.com/ada-heroines';
     loader.classList.add('loader');
